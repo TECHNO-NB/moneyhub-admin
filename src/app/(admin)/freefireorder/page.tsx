@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { RefreshCw } from "lucide-react";
 
 export interface FFOrder {
+  id: string;
+  user: any;
   ffUid: number;
   ffName: string;
   diamondTitle: string;
@@ -24,7 +26,9 @@ const Page = () => {
   const userData = useSelector((state: any) => state.user);
   const [orders, setOrders] = useState<FFOrder[]>([]);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"pending" | "delivered" | "rejected">("pending");
+  const [activeTab, setActiveTab] = useState<
+    "pending" | "delivered" | "rejected"
+  >("pending");
 
   const getALlOrder = async () => {
     try {
@@ -94,11 +98,19 @@ const Page = () => {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-3 font-semibold text-gray-600">User</th>
-              <th className="px-4 py-3 font-semibold text-gray-600">Freefire UID</th>
-              <th className="px-4 py-3 font-semibold text-gray-600">Freefire Name</th>
-              <th className="px-4 py-3 font-semibold text-gray-600">Diamonds Or W/M/LOP</th>
+              <th className="px-4 py-3 font-semibold text-gray-600">
+                Freefire UID
+              </th>
+              <th className="px-4 py-3 font-semibold text-gray-600">
+                Freefire Name
+              </th>
+              <th className="px-4 py-3 font-semibold text-gray-600">
+                Diamonds Or W/M/LOP
+              </th>
               <th className="px-4 py-3 font-semibold text-gray-600">Price</th>
-              <th className="px-4 py-3 font-semibold text-gray-600">Current Balance</th>
+              <th className="px-4 py-3 font-semibold text-gray-600">
+                Current Balance
+              </th>
               <th className="px-4 py-3 font-semibold text-gray-600">Status</th>
               <th className="px-4 py-3 font-semibold text-gray-600">Date</th>
             </tr>
@@ -110,7 +122,7 @@ const Page = () => {
                   key={order.ffUid + order.createdAt}
                   className="border-t hover:bg-red-400 transition duration-150"
                 >
-                  <td className="px-4 py-3">{userData.fullName}</td>
+                  <td className="px-4 py-3">{order.user.fullName}</td>
                   <td className="px-4 py-3">{order.ffUid}</td>
                   <td className="px-4 py-3">{order.ffName}</td>
                   <td className="px-4 py-3">{order.diamondTitle}</td>
@@ -125,9 +137,12 @@ const Page = () => {
                       className={clsx(
                         "px-2 py-1 rounded-full text-xs font-semibold cursor-pointer",
                         {
-                          "bg-yellow-100 text-yellow-700": order.status === "pending",
-                          "bg-green-300 text-green-700": order.status === "delivered",
-                          "bg-red-100 text-red-700": order.status === "rejected",
+                          "bg-yellow-100 text-yellow-700":
+                            order.status === "pending",
+                          "bg-green-300 text-green-700":
+                            order.status === "delivered",
+                          "bg-red-100 text-red-700":
+                            order.status === "rejected",
                         }
                       )}
                     >
