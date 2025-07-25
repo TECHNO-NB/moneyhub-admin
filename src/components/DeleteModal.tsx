@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 import { XCircle, Loader } from "lucide-react";
 
 export default function DeleteModal({

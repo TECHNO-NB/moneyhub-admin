@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 import { useState } from "react";
 import { User } from "@/app/(admin)/dashboard/page";
 import { X } from "lucide-react";

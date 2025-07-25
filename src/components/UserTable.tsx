@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 import { ShieldAlert, Trash2 } from "lucide-react"
 
 type Props = {

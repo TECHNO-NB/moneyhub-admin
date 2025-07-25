@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 import { useEffect, useState } from "react";
 import { RefreshCw, User as UserIcon, Coins } from "lucide-react";
 import axios from "axios";

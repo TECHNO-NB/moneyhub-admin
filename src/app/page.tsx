@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable */
 import React from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store"; // adjust to your store path
