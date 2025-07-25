@@ -127,7 +127,7 @@ const Page = () => {
                   <td className="px-4 py-3">{order.ffName}</td>
                   <td className="px-4 py-3">{order.diamondTitle}</td>
                   <td className="px-4 py-3">{order.diamondPrice}</td>
-                  <td className="px-4 py-3">{userData.balance}</td>
+                  <td className="px-4 py-3">{order.user.balance}</td>
                   <td className="px-4 py-3">
                     <span
                       onClick={() => {

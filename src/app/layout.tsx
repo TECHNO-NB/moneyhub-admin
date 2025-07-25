@@ -4,6 +4,7 @@ import "./globals.css";
 
 import VerifyUser from "@/components/UserVerify";
 import { WrapperLayout } from "@/components/WrapperLayout";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
           
           <VerifyUser />
           {children}
+          <Toaster/>
         </WrapperLayout>
       </body>
     </html>
