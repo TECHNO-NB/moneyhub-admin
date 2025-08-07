@@ -9,6 +9,7 @@ import {
   LogOut,
   Menu,
   X,
+  List,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,6 +34,11 @@ const AdminNavbar = () => {
       icon: <Settings size={18} />,
       href: "/freefireorder",
     },
+       {
+      name: "Freefire-TopUp List",
+      icon: <List size={18} />,
+      href: "/fftopuplist",
+    },
   ];
 
   const isActive = (href: string) => path === href;
@@ -42,7 +48,7 @@ const AdminNavbar = () => {
       <div className="flex justify-between items-center">
         {/* Logo */}
         <div className="text-2xl font-bold text-yellow-400">
-          <Link href="/admin">Admin Panel</Link>
+          <Link href="/">Admin Panel</Link>
         </div>
 
         {/* Desktop Nav */}

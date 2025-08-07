@@ -2,7 +2,9 @@
 /* eslint-disable */
 import { useState } from "react";
 import { User } from "@/app/(admin)/dashboard/page";
-import { X } from "lucide-react";
+import { Loader, X } from "lucide-react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 type Props = {
   users: User[];
@@ -13,6 +15,7 @@ const CoinsTable = ({ users }: Props) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [actionType, setActionType] = useState<"add" | "remove">("add");
   const [coinValue, setCoinValue] = useState("");
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   const openModal = (user: User, type: "add" | "remove") => {
     setSelectedUser(user);
@@ -21,15 +24,52 @@ const CoinsTable = ({ users }: Props) => {
     setCoinValue("");
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const value = parseInt(coinValue);
     if (isNaN(value) || value < 0) {
       alert("Please enter a valid non-negative number");
       return;
     }
 
-    console.log(`User: ${selectedUser?.fullName}, Action: ${actionType}, Value: ${value}`);
-    // 👉 Call your API or parent handler here
+   
+    if (actionType === "add") {
+      setLoading(true);
+      // add coin
+      try {
+        const res = await axios.patch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/add-coin/${selectedUser?.id}`,
+          {
+            coin: value,
+          }
+        );
+        if(res.data){
+          setLoading(false);
+          toast.success("Coin added successfully");
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        toast.error("Failed to add coin");
+      }
+    } else {
+      //remove user from coins
+      try {
+        const res = await axios.patch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/remove-coin/${selectedUser?.id}`,
+          {
+            coin: value,
+          }
+        );
+       if(res.data){
+          setLoading(false);
+          toast.success("Coin removed successfully")
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        toast.error("Failed to remove coin");
+      }
+    }
 
     setIsModalOpen(false);
   };
@@ -99,7 +139,14 @@ const CoinsTable = ({ users }: Props) => {
               onClick={handleConfirm}
               className="w-full bg-blue-600 hover:bg-blue-500 py-2 rounded"
             >
-              Confirm
+              {isLoading ? (
+                <div className="flex justify-center gap-1 items-center">
+                  <Loader className="w-5 h-5 animate-spin" />
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                "Confirm"
+              )}
             </button>
           </div>
         </div>

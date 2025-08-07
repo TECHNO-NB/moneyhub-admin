@@ -2,13 +2,17 @@
 /* eslint-disable */
 import { addUser, userState } from "@/redux/userSlice";
 import axios from "axios";
-import { useEffect } from "react";
+import { Loader } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function VerifyUser() {
   const dispatch = useDispatch();
   const userData = useSelector((state: any) => state.user);
+  const [isLoading, setIsLoading] = useState <boolean>(false);
   useEffect(() => {
+    setIsLoading(true);
     axios.defaults.withCredentials = true;
     const fetchUser = async () => {
       if (!userData || !userData.id) {
@@ -17,6 +21,7 @@ export default function VerifyUser() {
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/verify-user`
           );
           if (res.data.success) {
+            setIsLoading(false)
             const userData: userState = {
               id: res.data.data.id,
               avatar: res.data.data.avatar,
@@ -26,14 +31,25 @@ export default function VerifyUser() {
               role: res.data.data.role,
             };
             dispatch(addUser(userData));
+            toast.success(`Welcome back ${res.data.data.fullName}`);
           }
         } catch (error) {
           console.log(error);
+          toast.error("Login Now");
+           setIsLoading(false)
+        }finally{
+          setIsLoading(false)
         }
       }
     };
     fetchUser();
   }, []);
 
-  return null;
+  return ( 
+    <div className="fixed left-1/2 top-1/2">
+    { isLoading ? (
+      <Loader size={50} className=" animate-spin"/> 
+    ): null }
+    </div>
+  );
 }

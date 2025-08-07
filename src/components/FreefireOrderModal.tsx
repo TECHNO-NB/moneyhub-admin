@@ -74,7 +74,7 @@ const FreefireOrderModal: React.FC<ffModalSetOfType> = (data) => {
           <p>
             <span className="font-semibold text-white">
               Diamond or M/W/LOF Type:
-            </span>{" "}
+            </span>
             <span className="text-green-400">
               {data.selectedOrder.diamondTitle}
             </span>
