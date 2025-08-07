@@ -1,8 +1,8 @@
 'use client'
-import React, { useState } from "react";
+import React from "react";
 
 const page = () => {
-    const [data, setData] = useState([]);
+   
   return (
     <div className=" px-2 md:px-20 py-5 md:py-10">
       <div className="head">

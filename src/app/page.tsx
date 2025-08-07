@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store"; // adjust to your store path
 
-const AdminPage = () => {
+const page = () => {
   const user = useSelector((state: RootState) => state.user);
 
   return (
@@ -49,4 +49,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default page;

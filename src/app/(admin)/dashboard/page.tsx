@@ -18,7 +18,7 @@ export type User = {
   role: "user" | "admin" | "subadmin";
 };
 
-export default function AdminDashboard() {
+export default function page() {
   const [activeTab, setActiveTab] = useState<"users" | "coins">("users");
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState<User[]>([]);

@@ -20,10 +20,10 @@ export interface FFOrder {
   createdAt: string;
 }
 
-const Page = () => {
+const page = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedOrder, setSelectedUser] = useState<FFOrder>();
-  const userData = useSelector((state: any) => state.user);
+  // const userData = useSelector((state: any) => state.user);
   const [orders, setOrders] = useState<FFOrder[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<
@@ -168,4 +168,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default page;

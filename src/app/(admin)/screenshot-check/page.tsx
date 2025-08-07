@@ -32,7 +32,7 @@ const statusClasses: Record<any['status'], string> = {
   pending:  'text-yellow-600',
 }
 
-const Page = () => {
+const page = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [activeTab, setActiveTab] = useState<
     "pending" | "approved" | "rejected"
@@ -305,4 +305,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default page;
