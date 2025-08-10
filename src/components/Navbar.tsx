@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   List,
+  Gamepad2,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,15 +31,11 @@ const AdminNavbar = () => {
       href: "/screenshot-check",
     },
     {
-      name: "Freefire Order",
-      icon: <Settings size={18} />,
-      href: "/freefireorder",
+      name: "Freefire",
+      icon: <Gamepad2 size={18} />,
+      href: "/freefire",
     },
-       {
-      name: "Freefire-TopUp List",
-      icon: <List size={18} />,
-      href: "/fftopuplist",
-    },
+   
   ];
 
   const isActive = (href: string) => path === href;
