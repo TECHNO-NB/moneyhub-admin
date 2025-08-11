@@ -1,4 +1,6 @@
 "use client";
+/* eslint-disable */
+import ConfirmTournamentModal from "@/components/ConfirmTournamentModal";
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -12,13 +14,27 @@ const Page = () => {
   const [gameName, setGameName] = useState<string>("");
   const [winnerPrice, setWinnerPrice] = useState<number>(0);
   const [entryCost, setEntryCost] = useState<number>(0);
+  const [isModalOpen, setIsModalOPen] = useState(false);
+  const [match, setMatches] = useState({});
 
   const [dateTime, setDateTime] = useState(
     new Date().toISOString().slice(0, 16)
   );
+  const onClose = () => {
+    setIsModalOPen(!isModalOpen);
+    const matches = {
+      matchType: matchType,
+      limitedAmmo: limitedAmmo,
+      characterSkill: characterSkill,
+      gameName: gameName,
+      winnerPrice: winnerPrice,
+      entryCost: entryCost,
+    };
+    setMatches(matches);
+  };
 
   const handleConfirm = async () => {
-    console.log(matchType);
+    // onClose();
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/create-ff-tournament`,
@@ -43,6 +59,7 @@ const Page = () => {
 
   return (
     <div className="px-6 py-6 max-w-xl mx-auto text-white bg-black">
+      {isModalOpen ? <ConfirmTournamentModal onClose={onClose} match={match} /> : null}
       <h1 className="text-3xl text-yellow-400 font-bold text-center underline mb-6">
         Create Free Fire Tournament
       </h1>
