@@ -1,15 +1,35 @@
+/* eslint-disable */
 import React from "react";
 import Link from "next/link";
 
 const page = () => {
+  const links = [
+    { href: "/freefireorder", label: "FreeFire Order" },
+    { href: "/fftopuplist", label: "FreeFire TopUp List" },
+    { href: "/fftournament", label: "Create FreeFire Tournament" },
+    { href: "/managetournament", label: "Manage Already Created Tournament" },
+  ];
+
   return (
-    <div className="px-4">
-      <h1 className="text-2xl font-extrabold mt-4 mb-4 underline underline-yellow-400">FreeFire</h1>
-      <ul className="flex gap-4 items-center justify-center flex-wrap">
-        <Link className="bg-yellow-400  text-xl px-2 py-2 hover:bg-red-300 font-semibold rounded-lg" href="/freefireorder">FreeFire Order</Link>
-        <Link className="bg-yellow-400 text-xl px-2 py-2 hover:bg-red-300 font-semibold rounded-lg" href="/fftopuplist">FreeFire TopUp List</Link>
-        <Link className="bg-yellow-400 text-xl px-2 py-2 hover:bg-red-300 font-semibold rounded-lg" href="/fftournament">FreeFire TournaMent</Link>
-      </ul>
+    <div className="px-4 py-6 min-h-screen bg-gradient-to-br from-yellow-50 to-yellow-100">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-center mt-4 mb-8">
+        <span className="relative inline-block text-black">
+          FreeFire
+          <span className="absolute bottom-0 left-0 w-full h-1 bg-yellow-400 rounded-full"></span>
+        </span>
+      </h1>
+
+      <div className="flex flex-wrap justify-center gap-6">
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="bg-yellow-400 text-gray-900 text-lg md:text-xl font-semibold px-6 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 hover:bg-yellow-500 transition-all duration-300 ease-out"
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

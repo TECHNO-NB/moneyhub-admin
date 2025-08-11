@@ -2,6 +2,7 @@
 /* eslint-disable */
 import ConfirmTournamentModal from "@/components/ConfirmTournamentModal";
 import axios from "axios";
+import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -59,7 +60,9 @@ const Page = () => {
 
   return (
     <div className="px-6 py-6 max-w-xl mx-auto text-white bg-black">
-      {isModalOpen ? <ConfirmTournamentModal onClose={onClose} match={match} /> : null}
+      {isModalOpen ? (
+        <ConfirmTournamentModal onClose={onClose} match={match} />
+      ) : null}
       <h1 className="text-3xl text-yellow-400 font-bold text-center underline mb-6">
         Create Free Fire Tournament
       </h1>
@@ -171,10 +174,14 @@ const Page = () => {
       {/* Confirm Button */}
       <button
         onClick={handleConfirm}
-        className="w-full bg-yellow-400 hover:bg-yellow-500 transition-all text-black font-bold py-2 rounded-lg shadow-md"
+        className=" cursor-pointer  w-full bg-yellow-400 hover:bg-yellow-500 transition-all text-black font-bold py-2 rounded-lg shadow-md"
       >
         Confirm to Create
       </button>
+      <div className="div mt-4 text-center">
+
+      <Link className=" text-center text-blue-600 underline " href="/freefire">Back to freefire page</Link>
+      </div>
     </div>
   );
 };
