@@ -66,7 +66,7 @@ const AdminNavbar = () => {
         {/* Mobile Hamburger */}
         <div className="md:hidden">
           <button onClick={() => setMenuOpen(!menuOpen)} className="text-white">
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            {menuOpen ? <X className="cursor-pointer" size={24} /> : <Menu className="cursor-pointer" size={24} />}
           </button>
         </div>
 
