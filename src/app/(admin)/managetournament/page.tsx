@@ -177,6 +177,7 @@ const Page = () => {
                 {new Date(tournament.time).toLocaleString("en-US", {
                   dateStyle: "medium",
                   timeStyle: "short",
+                  timeZone: "Asia/Kathmandu",
                 })}
               </p>
 

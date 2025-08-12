@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import FreefireOrderModal from "@/components/FreefireOrderModal";
 import axios from "axios";
-import { useSelector } from "react-redux";
+
 import { RefreshCw } from "lucide-react";
 
 export interface FFOrder {
