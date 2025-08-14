@@ -6,10 +6,10 @@ import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const NEPAL_OFFSET_MINUTES = 5 * 60 + 45; // Nepal UTC+5:45
-
 const Page = () => {
-  const [matchType, setMatchType] = useState<"cs 4 v 4" | "br solo" | null>(null);
+  const [matchType, setMatchType] = useState<"cs 4 v 4" | "br solo" | null>(
+    null
+  );
   const [limitedAmmo, setLimitedAmmo] = useState<boolean | null>(null);
   const [characterSkill, setCharacterSkill] = useState<boolean | null>(null);
   const [gameName, setGameName] = useState<string>("");
@@ -18,35 +18,31 @@ const Page = () => {
   const [isModalOpen, setIsModalOPen] = useState(false);
   const [match, setMatches] = useState({});
 
-  // Convert current time to Nepal local datetime for input
-  const getNepalLocalDateTime = () => {
-    const now = new Date();
-    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-    const nepalTime = new Date(utc + NEPAL_OFFSET_MINUTES * 60000);
-    return nepalTime.toISOString().slice(0, 16); // YYYY-MM-DDTHH:mm
-  };
-
-  const [dateTime, setDateTime] = useState<string>(getNepalLocalDateTime());
-
+  const [dateTime, setDateTime] = useState(
+    new Date().toISOString().slice(0, 16)
+  );
   const onClose = () => {
     setIsModalOPen(!isModalOpen);
-    const matches = { matchType, limitedAmmo, characterSkill, gameName, winnerPrice, entryCost };
+    const matches = {
+      matchType: matchType,
+      limitedAmmo: limitedAmmo,
+      characterSkill: characterSkill,
+      gameName: gameName,
+      winnerPrice: winnerPrice,
+      entryCost: entryCost,
+    };
     setMatches(matches);
   };
 
   const handleConfirm = async () => {
+    // onClose();
     try {
       axios.defaults.withCredentials = true;
-
-      // Convert Nepal local time input to UTC for safe DB storage
-      const localDate = new Date(dateTime);
-      const utcDate = new Date(localDate.getTime() - NEPAL_OFFSET_MINUTES * 60000);
-
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/create-ff-tournament`,
         {
           title: matchType,
-          time: utcDate.toISOString(), // store UTC
+          time: dateTime,
           owner: gameName,
           ammo: limitedAmmo,
           skill: characterSkill,
@@ -54,18 +50,20 @@ const Page = () => {
           cost: entryCost,
         }
       );
-
-      if (res.data) toast.success("Tournament created successfully");
+      if (res.data) {
+        toast.success("Tournament created successfully");
+      }
     } catch (error) {
-      console.error(error);
-      toast.error("Unable to create tournament");
+      console.log(error);
+      toast.error("unable to create");
     }
   };
 
   return (
     <div className="px-6 py-6 max-w-xl mx-auto text-white bg-black">
-      {isModalOpen && <ConfirmTournamentModal onClose={onClose} match={match} />}
-
+      {isModalOpen ? (
+        <ConfirmTournamentModal onClose={onClose} match={match} />
+      ) : null}
       <h1 className="text-3xl text-yellow-400 font-bold text-center underline mb-6">
         Create Free Fire Tournament
       </h1>
@@ -90,7 +88,9 @@ const Page = () => {
               key={type}
               onClick={() => setMatchType(type as "cs 4 v 4" | "br solo")}
               className={`px-4 py-2 rounded-lg font-semibold transition-all ${
-                matchType === type ? "bg-green-500 text-white" : "bg-[#8beeff] text-black"
+                matchType === type
+                  ? "bg-green-500 text-white"
+                  : "bg-[#8beeff] text-black"
               }`}
             >
               {type === "cs 4 v 4" ? "CS 4 v 4" : "BR Solo"}
@@ -145,7 +145,7 @@ const Page = () => {
 
       {/* Tournament Date Time */}
       <div className="mb-4">
-        <p className="mb-1 text-sm font-semibold">Tournament Date & Time</p>
+        <p className="mb-1 text-sm  font-semibold">Tournament Date & Time</p>
         <input
           className="w-full border px-3 py-2 rounded-lg text-white"
           type="datetime-local"
@@ -156,37 +156,35 @@ const Page = () => {
 
       {/* Cost & Reward */}
       <div className="flex flex-col md:flex-row gap-3 mb-6">
-        <div className="flex-1">
-          <p>Entry cost</p>
-          <input
-            onChange={(e) => setEntryCost(Number(e.target.value))}
-            className="w-full border px-3 py-2 rounded-lg text-white"
-            type="number"
-            placeholder="Entry Cost"
-          />
-        </div>
-        <div className="flex-1">
-          <p>Reward for winner</p>
-          <input
-            onChange={(e) => setWinnerPrice(Number(e.target.value))}
-            className="w-full border px-3 py-2 rounded-lg text-white"
-            type="number"
-            placeholder="Reward for Winner"
-          />
-        </div>
+        <p>Entry cost</p>
+        <input
+          onChange={(e: any) => setEntryCost(e.target.value)}
+          className="w-full border px-3 py-2 rounded-lg text-white"
+          type="number"
+          placeholder="Entry Cost"
+        />
+        <p>Reward for winner</p>
+        <input
+          onChange={(e: any) => setWinnerPrice(e.target.value)}
+          className="w-full border px-3 py-2 rounded-lg text-white"
+          type="number"
+          placeholder="Reward for Winner"
+        />
       </div>
 
       {/* Confirm Button */}
       <button
         onClick={handleConfirm}
-        className="w-full bg-yellow-400 hover:bg-yellow-500 transition-all text-black font-bold py-2 rounded-lg shadow-md"
+        className=" cursor-pointer  w-full bg-yellow-400 hover:bg-yellow-500 transition-all text-black font-bold py-2 rounded-lg shadow-md"
       >
         Confirm to Create
       </button>
-
-      <div className="mt-4 text-center">
-        <Link className="text-blue-600 underline" href="/freefire">
-          Back to Free Fire page
+      <div className="div mt-4 text-center">
+        <Link
+          className=" text-center text-blue-600 underline "
+          href="/freefire"
+        >
+          Back to freefire page
         </Link>
       </div>
     </div>
