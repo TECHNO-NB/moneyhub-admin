@@ -46,6 +46,7 @@ const Page = () => {
   const [roomId, setRoomId] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isBtnLoad, setIsBtnLoad] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [tournamentToDelete, setTournamentToDelete] = useState<string | null>(
     null
@@ -126,18 +127,24 @@ const Page = () => {
     setShowPlayersDrawer(true);
   };
 
-  const updatePlayer = async (
-    playerId: string,
-    data: Partial<EnteredTournament>
-  ) => {
+  const handleWinner = async (winnerId: string) => {
+    setIsBtnLoad(true);
+    if (!winnerId) return;
     try {
-      await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/update-entered-user/${playerId}`,
-        data
+      axios.defaults.withCredentials=true;
+      const res = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/make-winner/${winnerId}`
       );
-      fetchTournaments();
+      if (res.data) {
+        setIsBtnLoad(false);
+        toast.success("Winner updated successfully");
+      }
     } catch (error) {
       console.error(error);
+      setIsBtnLoad(false);
+      toast.error("error on update winner");
+    } finally {
+      setIsBtnLoad(false);
     }
   };
 
@@ -303,37 +310,27 @@ const Page = () => {
           <h2 className="text-lg font-bold mb-4 text-yellow-300">
             Entered Users
           </h2>
-          {selectedPlayers.map((player) => (
+          {selectedPlayers.map((player: any) => (
             <div key={player.id} className="border-b border-gray-700 pb-3 mb-3">
               <p>
                 🎮 {player.gameName}{" "}
                 <span className="text-gray-400">
-                  ({player.id || "No name"})
+                  ({player.userId || "No name"})
                 </span>
               </p>
               <div className="flex gap-2 mt-2">
                 <button
-                  onClick={() =>
-                    updatePlayer(player.id, {
-                      isWinner: !player.isWinner,
-                      status: "completed",
-                      message: "You won the tournament!",
-                    })
-                  }
-                  className="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-500"
+                  onClick={() => handleWinner(player.userId)}
+                  className="bg-green-600 text-white cursor-pointer px-2 py-1 rounded hover:bg-green-500"
                 >
-                  {player.isWinner ? "Remove Winner" : "Make Winner"}
-                </button>
-                <button
-                  onClick={() =>
-                    updatePlayer(player.id, {
-                      status: "completed",
-                      message: "Tournament finished",
-                    })
-                  }
-                  className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-500"
-                >
-                  Mark Completed
+                  {isBtnLoad ? (
+                    <div className="div  flex gap-1">
+                      <Loader className="w-6 h-6 text-white font-semibold animate-spin" />
+                      <p>Loading...</p>
+                    </div>
+                  ) : (
+                    "Make winner"
+                  )}
                 </button>
               </div>
             </div>
