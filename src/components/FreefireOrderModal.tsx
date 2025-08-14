@@ -28,7 +28,7 @@ const FreefireOrderModal: React.FC<ffModalSetOfType> = (data) => {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/complete-fforder/${data.selectedOrder.id}`,
         {
-          userId: userData.id,
+          userId: data.selectedOrder.user.id,
           status: status,
           message: message,
         }
@@ -61,7 +61,9 @@ const FreefireOrderModal: React.FC<ffModalSetOfType> = (data) => {
         <div className="space-y-3 text-sm text-gray-300">
           <p>
             <span className="font-semibold text-white">Full Name:</span>{" "}
-            <span className="text-green-400">{data.selectedOrder.user.fullName}</span>
+            <span className="text-green-400">
+              {data.selectedOrder.user.fullName}
+            </span>
           </p>
           <p>
             <span className="font-semibold text-white">FF UID:</span>{" "}
