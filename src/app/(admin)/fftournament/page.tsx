@@ -2,6 +2,7 @@
 /* eslint-disable */
 import ConfirmTournamentModal from "@/components/ConfirmTournamentModal";
 import axios from "axios";
+import { Loader } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -16,6 +17,7 @@ const Page = () => {
   const [winnerPrice, setWinnerPrice] = useState<number>(0);
   const [entryCost, setEntryCost] = useState<number>(0);
   const [isModalOpen, setIsModalOPen] = useState(false);
+  const [btnLoader, setBtnLoader] = useState(false);
   const [match, setMatches] = useState({});
 
   const [dateTime, setDateTime] = useState(
@@ -36,6 +38,7 @@ const Page = () => {
 
   const handleConfirm = async () => {
     // onClose();
+    setBtnLoader(true);
     try {
       axios.defaults.withCredentials = true;
       const res = await axios.post(
@@ -51,11 +54,15 @@ const Page = () => {
         }
       );
       if (res.data) {
+        setBtnLoader(false);
         toast.success("Tournament created successfully");
       }
     } catch (error) {
+      setBtnLoader(false);
       console.log(error);
       toast.error("unable to create");
+    } finally {
+      setBtnLoader(false);
     }
   };
 
@@ -177,7 +184,14 @@ const Page = () => {
         onClick={handleConfirm}
         className=" cursor-pointer  w-full bg-yellow-400 hover:bg-yellow-500 transition-all text-black font-bold py-2 rounded-lg shadow-md"
       >
-        Confirm to Create
+        {btnLoader ? (
+          <div className="flex gap-1 items-center">
+            <Loader className="w-5 h-5 animate-spin" />
+            <span>Loading...</span>
+          </div>
+        ) : (
+          "Confirm to Create"
+        )}
       </button>
       <div className="div mt-4 text-center">
         <Link

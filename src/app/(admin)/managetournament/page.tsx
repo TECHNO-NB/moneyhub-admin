@@ -1,4 +1,5 @@
 "use client";
+import CancelTournamentModal from "@/components/CancelTournament";
 /* eslint-disable */
 
 import axios from "axios";
@@ -36,7 +37,7 @@ interface Tournament {
   enteredFfTournament: EnteredTournament[];
 }
 
-const Page = () => {
+const page = () => {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [selectedTournament, setSelectedTournament] =
     useState<Tournament | null>(null);
@@ -48,6 +49,7 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [isBtnLoad, setIsBtnLoad] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [cancelTournamentModal, setCancelTournamentModal] = useState(false);
   const [tournamentToDelete, setTournamentToDelete] = useState<string | null>(
     null
   );
@@ -68,6 +70,10 @@ const Page = () => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const closeCancelModal = () => {
+    setCancelTournamentModal(!cancelTournamentModal);
   };
 
   const openEditModal = (tournament: Tournament) => {
@@ -131,7 +137,7 @@ const Page = () => {
     setIsBtnLoad(true);
     if (!winnerId) return;
     try {
-      axios.defaults.withCredentials=true;
+      axios.defaults.withCredentials = true;
       const res = await axios.patch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/make-winner/${winnerId}`
       );
@@ -221,6 +227,19 @@ const Page = () => {
                 className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition-all cursor-pointer"
               >
                 Players
+              </button>
+              {cancelTournamentModal ? (
+                <CancelTournamentModal
+                  onCancel={closeCancelModal}
+                  tournamentId={tournament.id}
+                  cost={tournament.cost}
+                />
+              ) : null}
+              <button
+                onClick={() => setCancelTournamentModal(true)}
+                className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-500 transition-all cursor-pointer"
+              >
+                Cancel
               </button>
               <button
                 onClick={() => confirmDeleteTournament(tournament.id)}
@@ -347,4 +366,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default page;
