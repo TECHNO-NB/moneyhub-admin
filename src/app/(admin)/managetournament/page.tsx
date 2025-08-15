@@ -1,5 +1,6 @@
 "use client";
 import CancelTournamentModal from "@/components/CancelTournament";
+import MakeWinnerModal from "@/components/MakeWinnerModal";
 /* eslint-disable */
 
 import axios from "axios";
@@ -53,6 +54,7 @@ const page = () => {
   const [tournamentToDelete, setTournamentToDelete] = useState<string | null>(
     null
   );
+  const [ismakeWinnerModal, setIsMakeWinnerModal] = useState(false);
   const [showPlayersDrawer, setShowPlayersDrawer] = useState(false);
 
   useEffect(() => {
@@ -76,6 +78,9 @@ const page = () => {
     setCancelTournamentModal(!cancelTournamentModal);
   };
 
+  const makeWinnerModal = () => {
+    setIsMakeWinnerModal(!ismakeWinnerModal);
+  };
   const openEditModal = (tournament: Tournament) => {
     setSelectedTournament(tournament);
     setRoomId(tournament.roomId || "");
@@ -338,19 +343,23 @@ const page = () => {
                 </span>
               </p>
               <div className="flex gap-2 mt-2">
+                {ismakeWinnerModal ? (
+                  <MakeWinnerModal
+                    onCancel={makeWinnerModal}
+                    winnerId={player.userId}
+                  />
+                ) : null}
                 <button
-                  onClick={() => handleWinner(player.userId)}
+                  onClick={makeWinnerModal}
                   className="bg-green-600 text-white cursor-pointer px-2 py-1 rounded hover:bg-green-500"
                 >
-                  {isBtnLoad ? (
-                    <div className="div  flex gap-1">
-                      <Loader className="w-6 h-6 text-white font-semibold animate-spin" />
-                      <p>Loading...</p>
-                    </div>
-                  ) : (
-                    "Make winner"
-                  )}
+                  Make winner
                 </button>
+                {player.isWinner ? (
+                  <p className=" bg-yellow-300 font-semibold text-black text-center flex items-center justify-center px-2 rounded-xl">
+                    Winner
+                  </p>
+                ) : null}
               </div>
             </div>
           ))}

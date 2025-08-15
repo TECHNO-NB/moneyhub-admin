@@ -5,7 +5,7 @@ import React from "react";
 
 // @ts-ignore
 const ConfirmTournamentModal = ({ match, onClose }: any) => {
-  console.log(match);
+  
   return (
     <div className="">
       <div className="w-[100vw] h-[100vh] bg-black/50 absolute  opacity-[0.9] inset-0"></div>
