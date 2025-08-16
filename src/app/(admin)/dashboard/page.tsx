@@ -28,7 +28,9 @@ export default function page() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [coinInput, setCoinInput] = useState<{ [key: string]: number }>({});
   const [btnLoader, setBtnLoader] = useState<boolean>(false);
-
+  const [currentPage,setCurrentPage]=useState(0);
+  const [totalPage,setTotalPage]=useState(0);
+const limit=10;
   const filteredUsers = users.filter((u) =>
     u.fullName.toLowerCase().includes(search.toLowerCase())
   );
@@ -38,10 +40,11 @@ export default function page() {
       setLoading(true);
       axios.defaults.withCredentials = true;
       const getAllUser = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/get-alluser`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/get-alluser?page=${currentPage}&limit=${limit}`
       );
       if (getAllUser.data.success) {
-        setUsers(getAllUser.data.data);
+        setTotalPage(getAllUser.data.data.totalPage)
+        setUsers(getAllUser.data.data.allUser);
       }
     } catch (error) {
       console.log(error);
@@ -52,7 +55,7 @@ export default function page() {
 
   useEffect(() => {
     fetchAllUserData();
-  }, []);
+  }, [currentPage]);
 
   const handleDeleteUser = async (id: string) => {
     try {
@@ -182,6 +185,39 @@ export default function page() {
         />
       )}
 
+        <div className="flex gap-2 mt-4">
+        {/* Prev button */}
+        <button
+          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+          disabled={currentPage === 0}
+          onClick={() => setCurrentPage((p) => p - 1)}
+        >
+          Prev
+        </button>
+
+        {/* Page numbers */}
+        {Array.from({ length: totalPage}, (_, i) => (
+          <button
+            key={i}
+            className={`px-3 py-1 rounded ${
+              currentPage === i ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setCurrentPage(i)}
+          >
+            {i}
+          </button>
+        ))}
+
+        {/* Next button */}
+        <button
+          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+          disabled={currentPage === totalPage - 1}
+          onClick={() => setCurrentPage((p) => p + 1)}
+        >
+          Next
+        </button>
+    </div>
+
       {activeTab === "coins" && (
         <CoinsTable
         // @ts-ignore
@@ -214,6 +250,7 @@ export default function page() {
           btnLoader={btnLoader}
         />
       )}
+      
     </div>
   );
 }
