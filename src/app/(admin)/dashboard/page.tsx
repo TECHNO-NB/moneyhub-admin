@@ -28,9 +28,9 @@ export default function page() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [coinInput, setCoinInput] = useState<{ [key: string]: number }>({});
   const [btnLoader, setBtnLoader] = useState<boolean>(false);
-  const [currentPage,setCurrentPage]=useState(0);
-  const [totalPage,setTotalPage]=useState(0);
-const limit=10;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const limit = 10;
   const filteredUsers = users.filter((u) =>
     u.fullName.toLowerCase().includes(search.toLowerCase())
   );
@@ -43,7 +43,7 @@ const limit=10;
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/get-alluser?page=${currentPage}&limit=${limit}`
       );
       if (getAllUser.data.success) {
-        setTotalPage(getAllUser.data.data.totalPage)
+        setTotalPage(getAllUser.data.data.totalPage);
         setUsers(getAllUser.data.data.allUser);
       }
     } catch (error) {
@@ -185,10 +185,24 @@ const limit=10;
         />
       )}
 
-        <div className="flex gap-2 mt-4">
+     
+
+      {activeTab === "coins" && (
+        <CoinsTable
+          // @ts-ignore
+          users={filteredUsers}
+          // coinInput={coinInput}
+          // onChange={(id:any, value:any) =>
+          // setCoinInput((prev) => ({ ...prev, [id]: value }))
+          // }
+          // onCoinAction={handleCoinUpdate}
+        />
+      )}
+
+       <div className="flex gap-2  items-center justify-center mt-8">
         {/* Prev button */}
         <button
-          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+          className="px-3 py-1 rounded bg-yellow-400  font-semibold cursor-pointer disabled:opacity-50"
           disabled={currentPage === 0}
           onClick={() => setCurrentPage((p) => p - 1)}
         >
@@ -196,11 +210,11 @@ const limit=10;
         </button>
 
         {/* Page numbers */}
-        {Array.from({ length: totalPage}, (_, i) => (
+        {Array.from({ length: totalPage }, (_, i) => (
           <button
             key={i}
-            className={`px-3 py-1 rounded ${
-              currentPage === i ? "bg-blue-500 text-white" : "bg-gray-200"
+            className={`px-3 py-1 rounded cursor-pointer ${
+              currentPage === i ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
             }`}
             onClick={() => setCurrentPage(i)}
           >
@@ -210,26 +224,13 @@ const limit=10;
 
         {/* Next button */}
         <button
-          className="px-3 py-1 rounded bg-gray-200 disabled:opacity-50"
+          className="px-3 py-1 rounded bg-yellow-400  font-semibold cursor-pointer disabled:opacity-50"
           disabled={currentPage === totalPage - 1}
           onClick={() => setCurrentPage((p) => p + 1)}
         >
           Next
         </button>
-    </div>
-
-      {activeTab === "coins" && (
-        <CoinsTable
-        // @ts-ignore
-          users={filteredUsers}
-          // coinInput={coinInput}
-          // onChange={(id:any, value:any) =>
-            // setCoinInput((prev) => ({ ...prev, [id]: value }))
-          // }
-          // onCoinAction={handleCoinUpdate}
-        />
-       
-      )}
+      </div>
 
       {showDeleteModal && selectedUser && (
         <DeleteModal
@@ -250,7 +251,6 @@ const limit=10;
           btnLoader={btnLoader}
         />
       )}
-      
     </div>
   );
 }

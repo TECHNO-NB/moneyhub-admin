@@ -31,7 +31,6 @@ const CoinsTable = ({ users }: Props) => {
       return;
     }
 
-   
     if (actionType === "add") {
       setLoading(true);
       // add coin
@@ -42,7 +41,7 @@ const CoinsTable = ({ users }: Props) => {
             coin: value,
           }
         );
-        if(res.data){
+        if (res.data) {
           setLoading(false);
           toast.success("Coin added successfully");
         }
@@ -54,15 +53,22 @@ const CoinsTable = ({ users }: Props) => {
     } else {
       //remove user from coins
       try {
+        setLoading(true);
+        if (!selectedUser) return;
+        if (selectedUser?.balance < value) {
+          toast.error("coin is negative")
+          setLoading(false);
+          return;
+        }
         const res = await axios.patch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/remove-coin/${selectedUser?.id}`,
           {
             coin: value,
           }
         );
-       if(res.data){
+        if (res.data) {
           setLoading(false);
-          toast.success("Coin removed successfully")
+          toast.success("Coin removed successfully");
         }
       } catch (error) {
         console.log(error);
@@ -95,7 +101,7 @@ const CoinsTable = ({ users }: Props) => {
               <td className="p-3 text-center">
                 <button
                   onClick={() => openModal(user, "add")}
-                  className="bg-green-500 px-4 py-2 rounded-lg hover:bg-green-400"
+                  className="bg-green-500 cursor-pointer px-4 py-2 rounded-lg hover:bg-green-400"
                 >
                   Add
                 </button>
@@ -103,7 +109,7 @@ const CoinsTable = ({ users }: Props) => {
               <td className="p-3 text-center">
                 <button
                   onClick={() => openModal(user, "remove")}
-                  className="bg-red-500 px-4 py-2 rounded-lg hover:bg-red-400"
+                  className="bg-red-500 cursor-pointer px-4 py-2 rounded-lg hover:bg-red-400"
                 >
                   Remove
                 </button>
@@ -137,10 +143,10 @@ const CoinsTable = ({ users }: Props) => {
             />
             <button
               onClick={handleConfirm}
-              className="w-full bg-blue-600 hover:bg-blue-500 py-2 rounded"
+              className="w-full bg-blue-600 cursor-pointer hover:bg-blue-500 py-2 rounded"
             >
               {isLoading ? (
-                <div className="flex justify-center gap-1 items-center">
+                <div className="flex  justify-center gap-1 items-center">
                   <Loader className="w-5 h-5 animate-spin" />
                   <span>Loading...</span>
                 </div>

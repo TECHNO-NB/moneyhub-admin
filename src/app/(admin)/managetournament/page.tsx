@@ -1,8 +1,7 @@
 "use client";
+/* eslint-disable */
 import CancelTournamentModal from "@/components/CancelTournament";
 import MakeWinnerModal from "@/components/MakeWinnerModal";
-/* eslint-disable */
-
 import axios from "axios";
 import { Loader } from "lucide-react";
 import Link from "next/link";
@@ -56,6 +55,7 @@ const page = () => {
   );
   const [ismakeWinnerModal, setIsMakeWinnerModal] = useState(false);
   const [showPlayersDrawer, setShowPlayersDrawer] = useState(false);
+  const [selectedWinnerId, setSelectedWinnerId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTournaments();
@@ -346,11 +346,14 @@ const page = () => {
                 {ismakeWinnerModal ? (
                   <MakeWinnerModal
                     onCancel={makeWinnerModal}
-                    winnerId={player.userId}
+                    winnerId={selectedWinnerId}
                   />
                 ) : null}
                 <button
-                  onClick={makeWinnerModal}
+                  onClick={() => {
+                    setSelectedWinnerId(player.userId);
+                     makeWinnerModal();
+                  }}
                   className="bg-green-600 text-white cursor-pointer px-2 py-1 rounded hover:bg-green-500"
                 >
                   Make winner

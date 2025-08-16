@@ -1,22 +1,23 @@
 "use client";
-import axios from "axios";
 /* eslint-disable */
+import axios from "axios";
 import { XCircle, Loader } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function MakeWinnerModal({
-  winnerId,
   onCancel,
+  winnerId,
 }: {
-  winnerId: string;
+  winnerId: string | any;
   onCancel: () => void;
 }) {
   const [btnLoader, setIsBtnLoad] = useState(false);
   const handleWinner = async () => {
     setIsBtnLoad(true);
-   
+
     try {
+      
       axios.defaults.withCredentials = true;
       const res = await axios.patch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/make-winner/${winnerId}`
