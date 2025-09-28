@@ -5,15 +5,17 @@ import React, { useState } from "react";
 import {
   Home,
   Users,
-  Settings,
+ 
   LogOut,
   Menu,
   X,
-  List,
+  
+  ImageUp,
   Gamepad2,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 
 const AdminNavbar = () => {
   const path = usePathname();
@@ -34,6 +36,11 @@ const AdminNavbar = () => {
       name: "Freefire",
       icon: <Gamepad2 size={18} />,
       href: "/freefire",
+    },
+    {
+      name: "Banner",
+      icon: <ImageUp size={18} />,
+      href: "/banner",
     },
    
   ];
