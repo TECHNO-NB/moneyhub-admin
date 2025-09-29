@@ -67,7 +67,7 @@ const BannerModal = ({ changeModalStatus }: props) => {
     }
   };
   return (
-    <div className="fixed inset-0 max-w-full h-full flex items-center justify-center text-black px-4 ">
+    <div className="fixed inset-0 max-w-full h-full flex items-center justify-center text-black px-4 z-10">
       <div className="div absolute inset-0 bg-black/50"></div>
       <div className="div relative flex flex-col items-center rounded-2xl w-full h-96 md:h-96 md:w-96 bg-white">
         <h1 className="text-bold text-3xl border-b-2 mt-2 font-bold text-yellow-400">
